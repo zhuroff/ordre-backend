@@ -1,0 +1,14 @@
+import { Router } from 'express'
+import { body } from 'express-validator'
+import { AuthController } from '~/controllers/auth.controller'
+
+const router = Router()
+
+router.post(
+  '/registration',
+  body('email').isLength({ min: 3, max: 30 }),
+  body('password').isLength({ min: 8, max: 30 }),
+  AuthController.registration
+)
+
+export default router
