@@ -52,4 +52,25 @@ export class AuthController {
       next(error)
     }
   }
+
+  static async refresh(req: Request, res: Response, next: (error: unknown) => void) {
+    try {
+      const { refreshToken } = req.cookies
+      const userData = await authServices.refresh(refreshToken)
+
+      res.cookie(
+        'refreshToken',
+        userData?.refreshToken,
+        {
+          maxAge: 30 * 24 + 60 * 60 * 1000,
+          httpOnly: true ,
+          secure: process.env['NODE_ENV'] === 'production'
+        }
+      )
+
+      res.json(userData)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

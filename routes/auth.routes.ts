@@ -12,5 +12,6 @@ router.post(
 )
 
 router.post('/login', AuthController.login)
+router.get('/refresh', AuthController.refresh)
 
 export default router
