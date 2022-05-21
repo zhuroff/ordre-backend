@@ -1,18 +1,17 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import { ApiError } from '~/exceptions/api-errors'
-import authServices from '~/services/auth.services'
 import { Authentication } from '~/types/auth.types'
+import authServices from '~/services/auth.services'
 
 export class AuthController {
-  static async registration(req: Request, res: Response, next: (error: unknown) => void) {
+  static async registration(req: Request, res: Response) {
     try {
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest('Ошибка валидации', errors.array()))
+        throw errors.array()
       }
-
+      
       const { email, password }: Authentication = req.body
       const userData = await authServices.registration({ email, password })
 
@@ -28,7 +27,7 @@ export class AuthController {
 
       res.status(201).json(userData)
     } catch (error) {
-      next(error)
+      res.status(400).json(error)
     }
   }
 

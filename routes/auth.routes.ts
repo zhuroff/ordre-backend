@@ -6,8 +6,14 @@ const router = Router()
 
 router.post(
   '/registration',
-  body('email').isLength({ min: 3, max: 30 }),
-  body('password').isLength({ min: 8, max: 30 }),
+  body('email')
+    .isEmail()
+    .withMessage('invalid'),
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage('invalid:small')
+    .isLength({ max: 30 })
+    .withMessage('invalid:huge'),
   AuthController.registration
 )
 
