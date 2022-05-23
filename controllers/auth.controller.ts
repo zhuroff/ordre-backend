@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import { Registration, Authentication } from '~/types/auth.types'
+import { Authentication } from '~/types/auth.types'
 import authServices from '~/services/auth.services'
 
 export class AuthController {
@@ -12,8 +12,8 @@ export class AuthController {
         throw errors.array()
       }
       
-      const { email, password, passwordConfirm }: Registration = req.body
-      const userData = await authServices.registration({ email, password, passwordConfirm })
+      const { email, password }: Authentication = req.body
+      const userData = await authServices.registration({ email, password })
 
       res.cookie(
         'refreshToken',

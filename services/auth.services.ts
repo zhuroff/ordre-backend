@@ -1,12 +1,12 @@
 import { ApiError } from '~/exceptions/api-errors'
 import { User } from '~/models/user.model'
-import { Registration, Authentication } from '~/types/auth.types'
+import { Authentication } from '~/types/auth.types'
 import { UserDTO } from '~/dtos/user.dto'
 import bcrypt from 'bcrypt'
 import tokenService from './token.service'
 
 class AuthService {
-  async registration({ email, password }: Registration) {
+  async registration({ email, password }: Authentication) {
     const candidate = await User.findOne({ email })
 
     if (candidate) {
