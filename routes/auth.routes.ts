@@ -14,6 +14,14 @@ router.post(
     .withMessage('invalid:small')
     .isLength({ max: 30 })
     .withMessage('invalid:huge'),
+  body('passwordConfirm')
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('invalid')
+      }
+
+      return true
+    }),
   AuthController.registration
 )
 
